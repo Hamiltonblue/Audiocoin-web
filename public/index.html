@@ -1,1 +1,48 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AudioCoin | Listen-to-Earn</title><style>body { background-color: #0f172a; color: #38bdf8; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; } .play-btn { width: 100px; height: 100px; background: #38bdf8; border-radius: 50%; border: none; color: white; font-size: 30px; box-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }</style></head><body><h1>AudioCoin is LIVE</h1><button class="play-btn">▶</button></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudioCoin | Terminal</title>
+    <style>
+        :root { --primary: #38bdf8; --bg: #0f172a; --card: #1e293b; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .stats { margin-bottom: 20px; text-align: center; }
+        .balance { font-size: 3rem; font-weight: 800; color: var(--primary); text-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
+        .xp-bar { width: 250px; height: 8px; background: #334155; border-radius: 10px; margin: 10px 0; overflow: hidden; }
+        .xp-progress { width: 0%; height: 100%; background: var(--primary); transition: width 0.3s; }
+        .btn-mine { width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--primary); background: transparent; color: var(--primary); font-size: 40px; cursor: pointer; transition: 0.2s; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+        .btn-mine:active { transform: scale(0.95); background: rgba(56, 189, 248, 0.1); }
+    </style>
+</head>
+<body>
+    <div class="stats">
+        <div id="level">LEVEL 1</div>
+        <div class="balance"><span id="coin-count">0.000</span> AC</div>
+        <div class="xp-bar"><div id="xp-progress" class="xp-progress"></div></div>
+    </div>
+    <button class="btn-mine" onclick="mine()">▶</button>
+
+    <script>
+        let coins = 0;
+        let xp = 0;
+
+        function mine() {
+            // Earn 0.001 AC per click
+            coins += 0.001;
+            xp += 5;
+            
+            // Update UI
+            document.getElementById('coin-count').innerText = coins.toFixed(3);
+            
+            // Progress Bar Logic (Max 100 XP for Level 1)
+            let progress = (xp % 100);
+            document.getElementById('xp-progress').style.width = progress + "%";
+            
+            if(xp >= 100) {
+                document.getElementById('level').innerText = "LEVEL " + (Math.floor(xp/100) + 1);
+            }
+        }
+    </script>
+</body>
+</html>
