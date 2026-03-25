@@ -14,8 +14,8 @@
         .btn-mine { width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--primary); background: transparent; color: var(--primary); font-size: 40px; cursor: pointer; transition: 0.2s; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
         .btn-mine:active { transform: scale(0.95); background: rgba(56, 189, 248, 0.1); }
     </style>
-</head>
-<body>
+    </head>
+    <body>
     <div class="stats">
         <div id="level">LEVEL 1</div>
         <div class="balance"><span id="coin-count">0.000</span> AC</div>
@@ -44,5 +44,39 @@
             }
         }
     </script>
+        <script>
+// Your 3 fresh keys from AI Studio
+const apiKeys = [
+    "AIzaSyBxnNNuuZLqxYGTSVk3wCf5NI7G2z2O43I",
+    "AIzaSyCPm9yEz3d6sG-lf0Xl3UlZcJveC2U_dN4",
+    "AIzaSyDE97K9pxbFwNHpUwdTNshDhJrGXBrhxMY"
+];
+
+let currentKeyIndex = 0;
+
+async function askGemini(prompt) {
+    const activeKey = apiKeys[currentKeyIndex];
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${activeKey}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+        });
+
+        if (response.status === 429) { // Credit limit hit
+            currentKeyIndex++;
+            return currentKeyIndex < apiKeys.length ? askGemini(prompt) : "Limits reached.";
+        }
+
+        const data = await response.json();
+        return data.candidates.content.parts.text;
+    } catch (err) {
+        console.error("API Error:", err);
+    }
+}
+</script>
+
 </body>
 </html>
