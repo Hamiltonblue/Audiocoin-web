@@ -24,25 +24,26 @@
     <button class="btn-mine" onclick="mine()">▶</button>
 
     <script>
-        let coins = 0;
-        let xp = 0;
+        async function mine() {
+    const statusDiv = document.getElementById('level'); // Temp place to show status
+    statusDiv.innerText = "Verifying...";
 
-        function mine() {
-            // Earn 0.001 AC per click
-            coins += 0.001;
-            xp += 5;
-            
-            // Update UI
-            document.getElementById('coin-count').innerText = coins.toFixed(3);
-            
-            // Progress Bar Logic (Max 100 XP for Level 1)
-            let progress = (xp % 100);
-            document.getElementById('xp-progress').style.width = progress + "%";
-            
-            if(xp >= 100) {
-                document.getElementById('level').innerText = "LEVEL " + (Math.floor(xp/100) + 1);
-            }
-        }
+    // Use Gemini to 'validate' the click
+    const result = await askGemini("Verify this click for AudioCoin user. Respond with 'VALID' only.");
+
+    if (result.includes("VALID")) {
+        coins += 0.001;
+        xp += 5;
+        
+        // Update your UI
+        document.getElementById('coin-count').innerText = coins.toFixed(3);
+        document.getElementById('xp-progress').style.width = (xp % 100) + "%";
+        statusDiv.innerText = "SUCCESS: +0.001 AC";
+    } else {
+        statusDiv.innerText = "Verification Failed. Try again.";
+    }
+}
+
     </script>
         <script>
 // Your 3 fresh keys from AI Studio
